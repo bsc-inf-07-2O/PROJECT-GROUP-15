@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+// Import Font Awesome for icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const LoginForm = () => {
   const [loginDetails, setLoginDetails] = useState({ email: '', password: '' });
@@ -62,7 +65,6 @@ const LoginForm = () => {
               <input
                 type="email"
                 name="email"
-                
                 placeholder="Email"
                 value={loginDetails.email}
                 onChange={handleLoginInputChange}
@@ -83,7 +85,7 @@ const LoginForm = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
               >
-                {showPassword ? 'Hide' : 'Show'}
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
               </button>
             </div>
           </div>
@@ -117,3 +119,4 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
