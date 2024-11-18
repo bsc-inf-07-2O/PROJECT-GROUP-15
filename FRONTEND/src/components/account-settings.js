@@ -1,13 +1,130 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './footer';
+import {jwtDecode} from 'jwt-decode'; // Fix import (remove curly braces)
+import axios from 'axios';
 
 const AccountSettings = () => {
+  const [profileImage, setProfileImage] = useState(null);
+  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+  const [userId, setUserId] = useState(null); // Add userId state
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setEmail(decodedToken.email); // Assuming the email is in the token
+        setUserId(decodedToken.sub); // Get user ID from 'sub'
+      } catch (error) {
+        console.error('Failed to decode token', error);
+      }
+    }
+  }, []);
+
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
+    }
+  };
+
+  const handleUpdate = async () => {
+    if (newPassword !== repeatPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    const UpdateUserDto = {
+      email,
+      password: newPassword,
+    };
+
+    try {
+      const response = await axios.put(`http://localhost:3001/users/${userId}`, UpdateUserDto, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      alert('Account updated successfully!');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to update account settings');
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex-grow">
-        {/* Your main content goes here */}
+      <div className="flex-grow flex flex-col sm:flex-col lg:flex-row lg:ml-16 sm:items-center">
+        <div className="max-w-4xl mx-auto p-8 bg-gray-400 rounded-xl shadow-lg mt-8">
+          <h2 className="text-center text-3xl font-bold text-gray-800 mb-10">Update Account Settings</h2>
+          <div className="flex justify-center mb-12">
+            <div className="flex flex-col items-center">
+              <img
+                src={profileImage || '/images/th.jpeg'}
+                className="rounded-full h-32 w-32 bg-gray-200 object-cover mb-4 shadow-sm border border-gray-300"
+              />
+              <input
+                type="file"
+                onChange={handleProfileImageChange}
+                accept="image/*"
+                className="mb-4 text-sm"
+              />
+              <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-md transition duration-300 shadow">
+                Upload Image
+              </button>
+            </div>
+          </div>
+          <div className="space-y-8 mb-10">
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">New Password</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">Repeat Password</label>
+                <input
+                  type="password"
+                  value={repeatPassword}
+                  onChange={(e) => setRepeatPassword(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={handleUpdate}
+              className="bg-yellow-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-yellow-600 transition-shadow duration-300 shadow-md"
+            >
+              Update
+            </button>
+            <button className="bg-gray-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-gray-600 transition-shadow duration-300 shadow-md">
+              Done
+            </button>
+          </div>
+        </div>
       </div>
       <Footer />
     </div>
