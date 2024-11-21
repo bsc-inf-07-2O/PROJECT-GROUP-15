@@ -65,7 +65,7 @@ export class BondingService {
   // Update a bonding entry by ID
   async updateBonding(id: number, updateBondingDto: UpdateBonding): Promise<Bonding> {
     const bonding = await this.getBondingById(id); // Check if the bonding exists
-    Object.assign(bonding, updateBondingDto); // Update the bonding details
+    Object.assign(bonding, updateBondingDto); 
 
     return await this.bondingRepository.save(bonding);
   }
