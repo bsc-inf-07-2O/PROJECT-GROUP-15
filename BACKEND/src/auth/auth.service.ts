@@ -18,4 +18,9 @@ export class AuthService {
         }
         return user;
       }
+
+      createToken(user: User): string {
+        const payload = { email: user.email, FirstName: user.FirstName, SurName: user.SurName, sub: user.id, profileImage: user.profileImage, University:user.University, RegNo: user.RegNo };
+        return this.jwtService.sign(payload);
+      }
 }
