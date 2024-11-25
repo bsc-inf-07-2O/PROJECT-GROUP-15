@@ -27,7 +27,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
         charset: 'utf8mb4_unicode_ci',
       },
       synchronize: true, // Be cautious with this in production; use migrations instead
-      logging: true,
+      logging: false,
       connectTimeoutMS: 30000, 
     };
   },

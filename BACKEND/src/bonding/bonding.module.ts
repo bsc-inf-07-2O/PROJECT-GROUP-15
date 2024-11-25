@@ -7,15 +7,12 @@ import { UsersModule } from '../users/users.module';
 import { UniversityModule } from '../university/university.module';
 import { User } from '../users/Student.entity';
 import { University } from '../university/University.entity';
-import { mailerModule } from '../mailer/mailer.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Bonding, User, University]),
     UsersModule,
     UniversityModule,
-    mailerModule,
-    
   ],
   providers: [BondingService],
   controllers: [BondingController],

@@ -6,6 +6,8 @@ import { UpdateBonding } from './dto/update-bonding';
 import { Bonding } from './bonding-entity';
 import { User } from '../users/Student.entity';
 import { University } from '../university/University.entity';
+import { EmailService } from '../mailer/mailer.service';
+
 
 @Injectable()
 export class BondingService {
@@ -13,6 +15,7 @@ export class BondingService {
     @InjectRepository(Bonding) private bondingRepository: Repository<Bonding>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(University) private readonly universityRepository: Repository<University>,
+    private readonly emailService: EmailService,
   ) {}
 
   async createBonding(createBondingDto: CreateBonding, userId?: number): Promise<Bonding> {
@@ -23,6 +26,11 @@ export class BondingService {
       if (!user) {
         throw new NotFoundException(`User with ID ${userId} not found`);
       }
+
+      const bonding = this.bondingRepository.create({
+        ...createBondingDto,
+        user: user || undefined,
+    });
 
      const existingBonding = await this.bondingRepository.findOne({ where: { user: { id: userId } } }); 
      if (existingBonding) { 
@@ -67,6 +75,10 @@ export class BondingService {
       throw new NotFoundException(`University with ID ${createBondingDto.universityId} not found`);
     }
     bonding.university = university;
+
+    if (user) {
+      await this.emailService.sendBondingSuccessEmail(user);
+  }
 
     return await this.bondingRepository.save(bonding);
   }
