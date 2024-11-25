@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './footer';
-import {jwtDecode} from 'jwt-decode'; // Fix import (remove curly braces)
+import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
 const AccountSettings = () => {
@@ -9,15 +9,20 @@ const AccountSettings = () => {
   const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [userId, setUserId] = useState(null); // Add userId state
+  const [userId, setUserId] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [user, setUser] = useState(null);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        setEmail(decodedToken.email); // Assuming the email is in the token
-        setUserId(decodedToken.sub); // Get user ID from 'sub'
+        setEmail(decodedToken.email);
+        setUserId(decodedToken.sub);
+        setUser({ profileImage: decodedToken.profileImage });
       } catch (error) {
         console.error('Failed to decode token', error);
       }
@@ -29,29 +34,35 @@ const AccountSettings = () => {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setProfileImage(imageUrl);
+      setImageFile(file);
     }
   };
 
   const handleUpdate = async () => {
-    if (newPassword !== repeatPassword) {
+    if (newPassword && newPassword !== repeatPassword) {
       alert('Passwords do not match');
       return;
     }
 
     const token = localStorage.getItem('token');
-    const UpdateUserDto = {
-      email,
-      password: newPassword,
-    };
+    const formData = new FormData();
+
+    if (email) formData.append('email', email);
+    if (newPassword) formData.append('password', newPassword);
+    if (imageFile) formData.append('profileImage', imageFile);
+
+    if (!newPassword && !imageFile) {
+      alert('Please update either password or profile image');
+      return;
+    }
 
     try {
-      const response = await axios.put(`http://localhost:3001/users/${userId}`, UpdateUserDto, {
+      await axios.put(`http://localhost:3001/users/${userId}`, formData, {
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
-      
       alert('Account updated successfully!');
     } catch (error) {
       console.error(error);
@@ -68,8 +79,9 @@ const AccountSettings = () => {
           <div className="flex justify-center mb-12">
             <div className="flex flex-col items-center">
               <img
-                src={profileImage || '/images/th.jpeg'}
+                src={profileImage || user?.profileImage || '/images/th.jpeg'}
                 className="rounded-full h-32 w-32 bg-gray-200 object-cover mb-4 shadow-sm border border-gray-300"
+                alt="Profile"
               />
               <input
                 type="file"
@@ -77,9 +89,6 @@ const AccountSettings = () => {
                 accept="image/*"
                 className="mb-4 text-sm"
               />
-              <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-md transition duration-300 shadow">
-                Upload Image
-              </button>
             </div>
           </div>
           <div className="space-y-8 mb-10">
@@ -93,23 +102,37 @@ const AccountSettings = () => {
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
+              <div className="relative">
                 <label className="block text-gray-700 font-medium mb-2">New Password</label>
                 <input
-                  type="password"
+                  type={showNewPassword ? 'text' : 'password'}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                >
+                  {showNewPassword ? 'Hide' : 'Show'}
+                </button>
               </div>
-              <div>
+              <div className="relative">
                 <label className="block text-gray-700 font-medium mb-2">Repeat Password</label>
                 <input
-                  type="password"
+                  type={showRepeatPassword ? 'text' : 'password'}
                   value={repeatPassword}
                   onChange={(e) => setRepeatPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                >
+                  {showRepeatPassword ? 'Hide' : 'Show'}
+                </button>
               </div>
             </div>
           </div>
@@ -119,9 +142,6 @@ const AccountSettings = () => {
               className="bg-yellow-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-yellow-600 transition-shadow duration-300 shadow-md"
             >
               Update
-            </button>
-            <button className="bg-gray-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-gray-600 transition-shadow duration-300 shadow-md">
-              Done
             </button>
           </div>
         </div>
