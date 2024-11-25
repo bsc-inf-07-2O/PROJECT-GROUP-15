@@ -4,13 +4,13 @@ import { CreateUserDto } from '../users/dto/create-user.dto'; // Should be Login
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
-    @Post('login')
-    @HttpCode(200)
-    async login(@Body() createUserDto: CreateUserDto) { // Should be LoginDto
-      const user = await this.authService.validateUser(createUserDto.email, createUserDto.password);
-      const token = this.authService.createToken(user);
-      return { accessToken: token, user }; // Return the token and user info
-    }
+  @Post('login')
+  @HttpCode(200)
+  async login(@Body() createUserDto: CreateUserDto) { // Should be LoginDto
+    const user = await this.authService.validateUser(createUserDto.email, createUserDto.password);
+    const token = this.authService.createToken(user);
+    return { accessToken: token, user }; // Return the token and user info
+  }
 }
