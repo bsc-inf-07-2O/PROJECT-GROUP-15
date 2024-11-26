@@ -97,10 +97,12 @@ const Bonding = () => {
   }, []);
 
   const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
+    const { name, value } = event.target;
     setForm((prev) => ({
         ...prev,
-        [name]: type === 'number' ? Number(value) : type === 'checkbox' ? checked : value,
+        [name]: name === 'GuardianPhoneNumber' || name === 'AccountNumber' || name === 'PhoneNumber'
+            ? parseInt(value, 10) || ''
+            : value,
     }));
 };
 
@@ -177,7 +179,7 @@ const Bonding = () => {
           stageErrors[field] = `${field.replace(/([A-Z])/g, ' $1').trim()} is required.`;
         } else {
           if (field === 'PhoneNumber' && isNaN(form[field])) {
-            stageErrors[field] = 'Phone number must be numeric.';
+            stageErrors[field] = 'Phone number must be integer.';
           }
           if (field === 'DateOfBirth' && !(form[field] instanceof Date)) {
             stageErrors[field] = 'Date of Birth must be a valid date.';
@@ -329,7 +331,7 @@ const Bonding = () => {
                     <div key={index}>
                       <label className="block font-semibold mb-2">{field.replace(/([A-Z])/g, ' $1').trim()}:</label>
                       <input
-                        type={ field === 'PhoneNumber' ? 'number' : 'text'}
+                        
                         name={field}
                         value={form[field]}
                         onChange={handleChange}
@@ -513,8 +515,8 @@ const Bonding = () => {
                         className="border border-indigo-500 p-2 rounded-md w-full"
                       >
                         <option value="">Select Amount MWK</option>
-                        {field === 'Tuition' && <option value=" 650,000.00"> MK 650 000.00</option>}
-                        {field === 'UpkeepAmount' && <option value=" 580,000.00"> MK 580 000.00</option>}
+                        {field === 'Tuition' && <option value=" 650000"> MK 650 000.00</option>}
+                        {field === 'UpkeepAmount' && <option value=" 580000"> MK 580 000.00</option>}
                       </select>
                       {errors[field] && <p className="text-red-500 text-sm">{errors[field]}</p>}
                     </div>
