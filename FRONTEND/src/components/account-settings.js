@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './footer';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import axios from 'axios';
 
 const AccountSettings = () => {
@@ -73,81 +73,83 @@ const AccountSettings = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex-grow flex flex-col sm:flex-col lg:flex-row lg:ml-16 sm:items-center">
-        <div className="max-w-4xl mx-auto p-8 bg-gray-400 rounded-xl shadow-lg mt-8">
-          <h2 className="text-center text-3xl font-bold text-gray-800 mb-10">
-            Update Account Settings
-          </h2>
-          <div className="flex justify-center mb-12">
-            <div className="flex flex-col items-center">
-              <img
-                src={profileImage || user?.profileImage || "/images/th.jpeg"}
-                className="rounded-full h-32 w-32 bg-gray-200 object-cover mb-4 shadow-sm border border-gray-300"
-                alt="Profile"
-              />
+      <div className="flex-grow flex flex-col items-center justify-center py-8 px-4">
+        <h2 className="text-center text-3xl font-bold mb-6 text-gray-800">
+          Update Account Settings
+        </h2>
+        <div className="flex flex-col items-center mb-6">
+          <img
+            src={profileImage || user?.profileImage || "/images/th.jpeg"}
+            className="rounded-full h-32 w-32 bg-gray-200 object-cover mb-4 shadow-sm border border-gray-300"
+            alt="Profile"
+          />
+          <input
+            type="file"
+            onChange={handleProfileImageChange}
+            accept="image/*"
+            className="text-sm text-gray-700"
+          />
+        </div>
+
+        <div className="w-full max-w-lg">
+  <div className="mb-6">
+    <label className="block text-gray-700 font-medium mb-2">
+      Email Address
+    </label>
+    <input
+      type="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+    />
+  </div>
+
+  <div className="grid grid-cols-2 gap-4 mb-4 relative">
+            <div className="relative">
               <input
-                type="file"
-                onChange={handleProfileImageChange}
-                accept="image/*"
-                className="mb-4 text-sm"
+                type={showNewPassword ? "text" : "password"}
+                name="NewPassword"
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                className="p-2 border border-gray-300 rounded w-full"
               />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-blue-600"
+              >
+               {showNewPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+
+            <div className="relative">
+              <input
+                
+                type={showRepeatPassword ? "text" : "password"}
+                name="repeatPassword"
+                placeholder="Confirm Password"
+                value={repeatPassword}
+                 onChange={(e) => setRepeatPassword(e.target.value)}
+                required
+                className="p-2 border border-gray-300 rounded w-full"
+              />
+              <button
+                type="button"
+                onClick={() =>setShowRepeatPassword(!showRepeatPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-blue-600"
+              >
+                 {showRepeatPassword ? "Hide" : "Show"}
+              </button>
             </div>
           </div>
-          <div className="space-y-8 mb-10">
-            <div>
-              <label className="block text-gray-700 font-medium mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="relative">
-                <label className="block text-gray-700 font-medium mb-2">
-                  New Password
-                </label>
-                <input
-                  type={showNewPassword ? "text" : "password"}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
-                >
-                  {showNewPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-              <div className="relative">
-                <label className="block text-gray-700 font-medium mb-2">
-                  Repeat Password
-                </label>
-                <input
-                  type={showRepeatPassword ? "text" : "password"}
-                  value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-                >
-                  {showRepeatPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-end space-x-4">
+
+
+          <div className="flex justify-center mt-4">
             <button
               onClick={handleUpdate}
-              className="bg-yellow-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-yellow-600 transition-shadow duration-300 shadow-md"
+              className="bg-yellow-600 text-white px-6 py-3 rounded-md hover:bg-yellow-700 transition-shadow duration-300 shadow-md"
             >
               Update
             </button>
