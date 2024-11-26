@@ -14,6 +14,8 @@ const SignUp = () => {
     University: '',
     termsAgreed: false,
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -30,19 +32,23 @@ const SignUp = () => {
     e.preventDefault();
     setErrorMessage(''); // Reset error message
 
+    if (form.password.length < 8) {
+      setErrorMessage('Password must be at least 8 characters long.');
+      return;
+    }
     if (form.password !== form.confirmPassword) {
-      setErrorMessage("Passwords don't match");
+      setErrorMessage("Passwords don't match.");
       return;
     }
     if (!form.termsAgreed) {
-      setErrorMessage("Please agree to the terms and conditions.");
+      setErrorMessage('Please agree to the terms and conditions.');
       return;
     }
 
     setLoading(true); // Set loading state
     try {
       await axios.post(`http://localhost:3001/users/register`, form);
-      setShowSuccessModal(true);  // Open modal on success
+      setShowSuccessModal(true); // Open modal on success
     } catch (error) {
       console.error('Error creating account', error);
       setErrorMessage('Failed to create account: ' + (error.response?.data?.message || error.message));
@@ -53,13 +59,9 @@ const SignUp = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className=" rounded-lg shadow-lg flex flex-col w-11/12 md:w-3/4 lg:w-2/3 p-8">
+      <div className="rounded-lg shadow-lg flex flex-col w-11/12 md:w-3/4 lg:w-2/3 p-8">
         <div className="flex justify-center mb-4">
-          <img 
-            src="/images/logo.png" 
-            alt="Platform Logo" 
-            className="h-24"
-          />
+          <img src="/images/logo.png" alt="Platform Logo" className="h-24" />
         </div>
 
         <h2 className="text-center text-xl font-semibold">WELCOME TO ONLINE BONDING</h2>
@@ -113,25 +115,44 @@ const SignUp = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter Password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              className="p-2 border border-gray-300 rounded"
-            />
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              value={form.confirmPassword}
-              onChange={handleChange}
-              required
-              className="p-2 border border-gray-300 rounded"
-            />
+          <div className="grid grid-cols-2 gap-4 mb-4 relative">
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                placeholder="Enter Password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                className="p-2 border border-gray-300 rounded w-full"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-blue-600"
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
+
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                required
+                className="p-2 border border-gray-300 rounded w-full"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-blue-600"
+              >
+                {showConfirmPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -147,8 +168,7 @@ const SignUp = () => {
               <option value="Malawi University Of Applied Science">Malawi University Of Applied Science</option>
               <option value="Malawi University Of Science And Technology">Malawi University Of Science And Technology</option>
               <option value="Kamuzu University Of Health Science">Kamuzu University Of Health Science</option>
-              <option value="Mzuzu University Of Education">Nzunzu University Of Education</option>
-              
+              <option value="Mzuzu University Of Education">Mzuzu University Of Education</option>
               <option value="LUANAR">LUANAR</option>
             </select>
           </div>
@@ -186,7 +206,6 @@ const SignUp = () => {
                   navigate('/');
                 }}
                 className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-yellow-600"
-                aria-label="Close success modal and go to login"
               >
                 Go to Login
               </button>
