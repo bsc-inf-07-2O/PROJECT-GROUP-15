@@ -25,6 +25,12 @@ let AuthController = class AuthController {
         const token = this.authService.createToken(user);
         return { accessToken: token, user };
     }
+    async resetPasswordRequest(email) {
+        return this.authService.sendPasswordResetLink(email);
+    }
+    async resetPassword(token, newPassword) {
+        return this.authService.resetPassword(token, newPassword);
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -35,6 +41,21 @@ __decorate([
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('reset-password-request'),
+    __param(0, (0, common_1.Body)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "resetPasswordRequest", null);
+__decorate([
+    (0, common_1.Post)('reset-password'),
+    __param(0, (0, common_1.Body)('token')),
+    __param(1, (0, common_1.Body)('newPassword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "resetPassword", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

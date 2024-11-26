@@ -1,2 +1,2 @@
-export declare class mailerModule {
+export declare class CustomMailerModule {
 }

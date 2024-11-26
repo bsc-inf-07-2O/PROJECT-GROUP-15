@@ -8,9 +8,26 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
-  async login(@Body() createUserDto: CreateUserDto) { // Should be LoginDto
-    const user = await this.authService.validateUser(createUserDto.email, createUserDto.password);
+  async login(@Body() createUserDto: CreateUserDto) {
+    // Should be LoginDto
+    const user = await this.authService.validateUser(
+      createUserDto.email,
+      createUserDto.password,
+    );
     const token = this.authService.createToken(user);
     return { accessToken: token, user }; // Return the token and user info
+  }
+
+  @Post('reset-password-request')
+  async resetPasswordRequest(@Body('email') email: string): Promise<void> {
+    return this.authService.sendPasswordResetLink(email);
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body('token') token: string,
+    @Body('newPassword') newPassword: string,
+  ): Promise<void> {
+    return this.authService.resetPassword(token, newPassword);
   }
 }

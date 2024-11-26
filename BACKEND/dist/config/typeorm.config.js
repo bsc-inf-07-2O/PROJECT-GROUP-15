@@ -25,7 +25,7 @@ exports.typeOrmAsyncConfig = {
                 charset: 'utf8mb4_unicode_ci',
             },
             synchronize: true,
-            logging: true,
+            logging: false,
             connectTimeoutMS: 30000,
         };
     },

@@ -7,4 +7,6 @@ export declare class AuthController {
         accessToken: string;
         user: import("../users/Student.entity").User;
     }>;
+    resetPasswordRequest(email: string): Promise<void>;
+    resetPassword(token: string, newPassword: string): Promise<void>;
 }

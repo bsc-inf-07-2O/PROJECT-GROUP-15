@@ -19,11 +19,13 @@ const typeorm_2 = require("typeorm");
 const bonding_entity_1 = require("./bonding-entity");
 const Student_entity_1 = require("../users/Student.entity");
 const University_entity_1 = require("../university/University.entity");
+const mailer_service_1 = require("../mailer/mailer.service");
 let BondingService = class BondingService {
-    constructor(bondingRepository, userRepository, universityRepository) {
+    constructor(bondingRepository, userRepository, universityRepository, emailService) {
         this.bondingRepository = bondingRepository;
         this.userRepository = userRepository;
         this.universityRepository = universityRepository;
+        this.emailService = emailService;
     }
     async createBonding(createBondingDto, userId) {
         let user = null;
@@ -32,6 +34,10 @@ let BondingService = class BondingService {
             if (!user) {
                 throw new common_1.NotFoundException(`User with ID ${userId} not found`);
             }
+            const bonding = this.bondingRepository.create({
+                ...createBondingDto,
+                user: user || undefined,
+            });
             const existingBonding = await this.bondingRepository.findOne({ where: { user: { id: userId } } });
             if (existingBonding) {
                 throw new common_1.BadRequestException(`You have already completed the bonding process.`);
@@ -73,6 +79,9 @@ let BondingService = class BondingService {
             throw new common_1.NotFoundException(`University with ID ${createBondingDto.universityId} not found`);
         }
         bonding.university = university;
+        if (user) {
+            await this.emailService.sendBondingSuccessEmail(user);
+        }
         return await this.bondingRepository.save(bonding);
     }
     async getAllBondings() {
@@ -128,6 +137,7 @@ exports.BondingService = BondingService = __decorate([
     __param(2, (0, typeorm_1.InjectRepository)(University_entity_1.University)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
-        typeorm_2.Repository])
+        typeorm_2.Repository,
+        mailer_service_1.EmailService])
 ], BondingService);
 //# sourceMappingURL=bonding.service.js.map

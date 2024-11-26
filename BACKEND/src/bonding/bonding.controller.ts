@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Controller } from '@nestjs/common';
-
-@Controller('bonding')
-export class BondingController {}
-=======
-=======
->>>>>>> cb1368fd7492417344ad1d194a6ef3581f993036
 import {
   Controller,
   Post,
@@ -70,7 +61,3 @@ export class BondingController {
     return await this.bondingService.removeBonding(id);
   }
 }
-<<<<<<< HEAD
->>>>>>> origin/JOEL-GANIZANI
-=======
->>>>>>> cb1368fd7492417344ad1d194a6ef3581f993036

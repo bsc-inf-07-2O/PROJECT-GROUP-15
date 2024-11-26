@@ -6,30 +6,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mailerModule = void 0;
+exports.CustomMailerModule = void 0;
 const common_1 = require("@nestjs/common");
 const mailer_service_1 = require("./mailer.service");
 const mailer_1 = require("@nestjs-modules/mailer");
-let mailerModule = class mailerModule {
+let CustomMailerModule = class CustomMailerModule {
 };
-exports.mailerModule = mailerModule;
-exports.mailerModule = mailerModule = __decorate([
+exports.CustomMailerModule = CustomMailerModule;
+exports.CustomMailerModule = CustomMailerModule = __decorate([
+    (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
             mailer_1.MailerModule.forRoot({
                 transport: {
-                    host: process.env.EMAIL_HOST,
+                    service: 'gmail',
                     port: 465,
-                    secure: true,
+                    secure: false,
                     auth: {
-                        user: process.env.EMAIL_USER,
-                        pass: process.env.EMAIL_PASS,
+                        user: 'bsc-inf-07-20@unima.ac.mw',
+                        pass: 'xgfjwwgorxecmssw',
                     },
+                },
+                defaults: {
+                    from: 'No Reply bsc-inf-07-20@unima.ac.mw',
                 },
             }),
         ],
         providers: [mailer_service_1.EmailService],
         exports: [mailer_service_1.EmailService],
     })
-], mailerModule);
+], CustomMailerModule);
 //# sourceMappingURL=mailer.module.js.map

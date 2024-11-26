@@ -75,11 +75,13 @@ const AccountSettings = () => {
       <Navbar />
       <div className="flex-grow flex flex-col sm:flex-col lg:flex-row lg:ml-16 sm:items-center">
         <div className="max-w-4xl mx-auto p-8 bg-gray-400 rounded-xl shadow-lg mt-8">
-          <h2 className="text-center text-3xl font-bold text-gray-800 mb-10">Update Account Settings</h2>
+          <h2 className="text-center text-3xl font-bold text-gray-800 mb-10">
+            Update Account Settings
+          </h2>
           <div className="flex justify-center mb-12">
             <div className="flex flex-col items-center">
               <img
-                src={profileImage || user?.profileImage || '/images/th.jpeg'}
+                src={profileImage || user?.profileImage || "/images/th.jpeg"}
                 className="rounded-full h-32 w-32 bg-gray-200 object-cover mb-4 shadow-sm border border-gray-300"
                 alt="Profile"
               />
@@ -93,7 +95,9 @@ const AccountSettings = () => {
           </div>
           <div className="space-y-8 mb-10">
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Email Address</label>
+              <label className="block text-gray-700 font-medium mb-2">
+                Email Address
+              </label>
               <input
                 type="email"
                 value={email}
@@ -103,9 +107,11 @@ const AccountSettings = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="relative">
-                <label className="block text-gray-700 font-medium mb-2">New Password</label>
+                <label className="block text-gray-700 font-medium mb-2">
+                  New Password
+                </label>
                 <input
-                  type={showNewPassword ? 'text' : 'password'}
+                  type={showNewPassword ? "text" : "password"}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
@@ -113,15 +119,17 @@ const AccountSettings = () => {
                 <button
                   type="button"
                   onClick={() => setShowNewPassword(!showNewPassword)}
-                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
                 >
-                  {showNewPassword ? 'Hide' : 'Show'}
+                  {showNewPassword ? "Hide" : "Show"}
                 </button>
               </div>
               <div className="relative">
-                <label className="block text-gray-700 font-medium mb-2">Repeat Password</label>
+                <label className="block text-gray-700 font-medium mb-2">
+                  Repeat Password
+                </label>
                 <input
-                  type={showRepeatPassword ? 'text' : 'password'}
+                  type={showRepeatPassword ? "text" : "password"}
                   value={repeatPassword}
                   onChange={(e) => setRepeatPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
@@ -131,7 +139,7 @@ const AccountSettings = () => {
                   onClick={() => setShowRepeatPassword(!showRepeatPassword)}
                   className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
                 >
-                  {showRepeatPassword ? 'Hide' : 'Show'}
+                  {showRepeatPassword ? "Hide" : "Show"}
                 </button>
               </div>
             </div>

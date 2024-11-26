@@ -9,7 +9,7 @@ import { MailerModule as NestMailerModule } from '@nestjs-modules/mailer'; // Im
       transport: {
         service: 'gmail',
         port: 465,
-        secure: true,
+        secure: false,
         auth: {
           user: 'bsc-inf-07-20@unima.ac.mw',
           pass: 'xgfjwwgorxecmssw',

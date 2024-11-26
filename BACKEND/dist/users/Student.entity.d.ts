@@ -8,6 +8,8 @@ export declare class User extends BaseEntity {
     University: string;
     email: string;
     password: string;
+    resetPasswordToken: string;
+    resetPasswordExpires: Date;
     profileImage?: string;
     bondings: Bonding[];
 }

@@ -1,37 +1,33 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// AuthContext.js
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
+const AUTH_STATE_KEY = "auth_state";
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    
-    if (token && userData) {
-      setIsAuthenticated(true);
-      setUser(JSON.parse(userData)); // Parse the user data from string
-    }
+    const getAuthenticationState = () => {
+      // the auth_state => active | inactive
+      const value = localStorage.getItem(AUTH_STATE_KEY) ?? "inactive";
+      if (value === "inactive") navigate("/");
+    };
+    getAuthenticationState();
   }, []);
 
-  const login = (token, userData) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setIsAuthenticated(true);
-    setUser(userData);
+  const login = () => {
+    localStorage.setItem(AUTH_STATE_KEY, "active");
+    navigate("/dashboard");
   };
-
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setIsAuthenticated(false);
-    setUser(null);
+    localStorage.setItem(AUTH_STATE_KEY, "inactive");
+    navigate("/", { replace: true });
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ login, logout }}>
       {children}
     </AuthContext.Provider>
   );

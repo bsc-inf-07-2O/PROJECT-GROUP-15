@@ -16,6 +16,7 @@ const typeorm_config_1 = require("./config/typeorm.config");
 const config_1 = require("@nestjs/config");
 const bonding_module_1 = require("./bonding/bonding.module");
 const erigible_module_1 = require("./erigible/erigible.module");
+const mailer_module_1 = require("./mailer/mailer.module");
 const auth_module_1 = require("./auth/auth.module");
 const university_module_1 = require("./university/university.module");
 let AppModule = class AppModule {
@@ -31,6 +32,7 @@ exports.AppModule = AppModule = __decorate([
             erigible_module_1.ErigibleModule,
             auth_module_1.AuthModule,
             university_module_1.UniversityModule,
+            mailer_module_1.CustomMailerModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Injectable } from '@nestjs/common';
-
-@Injectable()
-export class BondingService {}
-=======
-=======
->>>>>>> cb1368fd7492417344ad1d194a6ef3581f993036
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -148,7 +139,3 @@ export class BondingService {
   }
 
 }
-<<<<<<< HEAD
->>>>>>> origin/JOEL-GANIZANI
-=======
->>>>>>> cb1368fd7492417344ad1d194a6ef3581f993036
