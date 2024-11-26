@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsDate, IsEnum, IsEmail, IsOptional, IsIn } from 'class-validator';
+import { IsString, IsNotEmpty, IsInt, IsDate,IsNumber, IsEnum, IsEmail, IsOptional, IsIn } from 'class-validator';
 
 export class CreateBonding {
 
@@ -19,7 +19,7 @@ export class CreateBonding {
   @IsNotEmpty({ message: 'Sex is required' })
   Sex!: string;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty({ message: 'Phone number is required' })
   PhoneNumber!: number;
 
@@ -68,9 +68,9 @@ export class CreateBonding {
   @IsOptional()
   GuardianOccupation?: string;
 
-  @IsString()
+  @IsInt()
   @IsOptional()
-  GuardianPhoneNumber?: string;
+  GuardianPhoneNumber?: number;
 
   // Stage 3: Bank Details
   @IsString()
@@ -85,9 +85,9 @@ export class CreateBonding {
   @IsOptional()
   AccountName?: string;
 
-  @IsString()
+  @IsInt()
   @IsOptional()
-  AccountNumber?: string;
+  AccountNumber?: number;
 
   // Stage 4: Documentation
   @IsString()
@@ -101,11 +101,11 @@ export class CreateBonding {
   // Stage 5: Loan Amount Details
 
   @IsOptional()
-  Tuition?: string;
+  Tuition?: number;
 
 
   @IsOptional()
-  UpkeepAmount?: string;
+  UpkeepAmount?: number;
 
   @IsNumber()
   @IsOptional()
