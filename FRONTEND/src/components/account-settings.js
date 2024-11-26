@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './footer';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
 const AccountSettings = () => {
@@ -12,6 +12,8 @@ const AccountSettings = () => {
   const [userId, setUserId] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [user, setUser] = useState(null);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -100,23 +102,37 @@ const AccountSettings = () => {
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
+              <div className="relative">
                 <label className="block text-gray-700 font-medium mb-2">New Password</label>
                 <input
-                  type="password"
+                  type={showNewPassword ? 'text' : 'password'}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                >
+                  {showNewPassword ? 'Hide' : 'Show'}
+                </button>
               </div>
-              <div>
+              <div className="relative">
                 <label className="block text-gray-700 font-medium mb-2">Repeat Password</label>
                 <input
-                  type="password"
+                  type={showRepeatPassword ? 'text' : 'password'}
                   value={repeatPassword}
                   onChange={(e) => setRepeatPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                >
+                  {showRepeatPassword ? 'Hide' : 'Show'}
+                </button>
               </div>
             </div>
           </div>
