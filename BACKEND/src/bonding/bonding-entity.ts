@@ -21,8 +21,8 @@ export class Bonding extends BaseEntity {
   @Column({ type: 'varchar', length: 10 })
   sex!: string; // Gender (e.g., Male, Female)
 
-  @Column({ type: 'int' })
-  phoneNumber!: number; // Phone number
+  @Column({ type: 'bigint' }) // Use bigint for phone numbers to avoid size issues
+  phoneNumber!: number;
 
   @Column({ type: 'varchar', length: 255 })
   homeVillage!: string; // Home village
@@ -49,11 +49,11 @@ export class Bonding extends BaseEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   nationalId?: string; // Path or identifier of the uploaded document
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  tuitionAmount!: number; // Tuition amount
+  @Column({ type: 'numeric', precision: 10, scale: 2 }) // Use numeric for amounts
+tuitionAmount!: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  upkeepAmount!: number; // Upkeep amount
+@Column({ type: 'numeric', precision: 10, scale: 2 })
+upkeepAmount!: number;
 
   // Guardian Details
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -74,8 +74,8 @@ export class Bonding extends BaseEntity {
   @Column({ type: 'varchar', length: 100, nullable: true })
   guardianOccupation?: string; // Guardian's occupation
 
-  @Column({ type: 'varchar', length: 15, nullable: true })
-  guardianPhoneNumber?: string; // Guardian's phone number
+  @Column({ type: 'int', nullable: true })
+  guardianPhoneNumber?: number; // Guardian's phone number
 
   // Bank Details
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -87,8 +87,8 @@ export class Bonding extends BaseEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   accountName?: string; // Account name
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  accountNumber?: string; // Account number
+  @Column({ type: 'bigint', nullable: true })
+accountNumber?: number;
 
   @ManyToOne(() => University, (university) => university.bondings, { onDelete: 'CASCADE', eager: true }) 
   university!: University;
