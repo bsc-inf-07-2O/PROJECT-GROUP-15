@@ -1,0 +1,33 @@
+import { BaseEntity } from 'typeorm';
+import { User } from '../users/Student.entity';
+import { University } from '../university/University.entity';
+export declare class Bonding extends BaseEntity {
+    id: number;
+    firstName: string;
+    surName: string;
+    dateOfBirth: string;
+    sex: string;
+    phoneNumber: number;
+    homeVillage: string;
+    TA: string;
+    NationalIdNo: string;
+    District: string;
+    PostalAddress: string;
+    studentId?: string;
+    nationalId?: string;
+    tuitionAmount: number;
+    upkeepAmount: number;
+    guardianFullName?: string;
+    guardianPostalAddress?: string;
+    guardianPhysicalAddress?: string;
+    guardianHomeVillage?: string;
+    guardianDistrict?: string;
+    guardianOccupation?: string;
+    guardianPhoneNumber?: string;
+    bankName?: string;
+    branch?: string;
+    accountName?: string;
+    accountNumber?: string;
+    university: University;
+    user: User;
+}
