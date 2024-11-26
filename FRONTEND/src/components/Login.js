@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from './Authentication';
 
 const LoginForm = () => {
+  const { login } = useAuth();
   const [loginDetails, setLoginDetails] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -12,30 +14,33 @@ const LoginForm = () => {
   const handleLoginInputChange = (e) => {
     const { name, value } = e.target;
     setLoginDetails({ ...loginDetails, [name]: value });
+    setMessage(''); // Clear error message on input
   };
 
+  const validatePassword = (password) => password.length >= 8;
+
   const handleLogin = async () => {
-    if (!loginDetails.email || !loginDetails.password) {
+    const { email, password } = loginDetails;
+
+    if (!email || !password) {
       setMessage('Please enter both email and password');
       return;
     }
-    if (loginDetails.password.length < 8) {
+    if (!validatePassword(password)) {
       setMessage('Password is too short. Please enter at least 8 characters.');
       return;
     }
+
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:3001/auth/login', {
-        email: loginDetails.email,
-        password: loginDetails.password,
-      });
+      const response = await axios.post('http://localhost:3001/auth/login', { email, password });
       if (response.data) {
-        localStorage.setItem('token', response.data.accessToken); // Store the token
-        localStorage.setItem('user', JSON.stringify(response.data.user)); // Save user info to localStorage
+        localStorage.setItem('token', response.data.accessToken);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        login();
         navigate('/dashboard');
       }
     } catch (error) {
-      console.error('Login failed', error);
       setMessage(
         error.response && error.response.status === 401
           ? 'Invalid email or password'
@@ -47,28 +52,33 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-gray-400 p-8 rounded-lg shadow-lg">
-        <div className="text-center">
-          <img className="mx-auto h-16 w-auto" src="/images/logo.png" alt="Board Logo" />
-          <h1 className="text-center text-2xl font-extrabold">WELCOME TO ONLINE BONDING</h1>
-          <h2 className="mt-6 text-center text-xl font-semibold text-gray-900">
-            Login below or <Link to="/auth-check" className="text-blue-300 hover:text-yellow-400">SignUp</Link>
-          </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="w-full max-w-md p-8 space-y-6">
+        <div className="flex flex-col items-center">
+          <img className="h-20 mb-4" src="/images/logo.png" alt="Board Logo" />
+          <h1 className="text-center text-2xl font-bold text-gray-900">
+            Welcome to online bonding platform
+          </h1>
+          <p className="text-center text-gray-500 mt-2">
+            Login below or{' '}
+            <Link to="/auth-check" className="text-blue-600 hover:underline">
+              create new account
+            </Link>
+          </p>
         </div>
-        <form className="mt-8 space-y-6">
+        <form className="space-y-4">
           <div className="rounded-md shadow-sm">
-            <div className="mb-4">
+            <div>
               <input
                 type="email"
                 name="email"
-                
                 placeholder="Email"
                 value={loginDetails.email}
                 onChange={handleLoginInputChange}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="appearance-none rounded-t-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
+            <br />
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -76,38 +86,47 @@ const LoginForm = () => {
                 placeholder="Password"
                 value={loginDetails.password}
                 onChange={handleLoginInputChange}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className={`appearance-none rounded-b-md relative block w-full px-3 py-2 border ${
+                  validatePassword(loginDetails.password)
+                    ? 'border-gray-300'
+                    : 'border-red-500'
+                } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
               >
                 {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
           </div>
+          {loginDetails.password && !validatePassword(loginDetails.password) && (
+            <p className="text-sm text-red-600">
+              Password must be at least 8 characters long.
+            </p>
+          )}
           <div>
             <button
               type="button"
               onClick={handleLogin}
-              disabled={loading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-grey-500 ${
-                loading ? 'opacity-50' : ''
+              disabled={loading || !loginDetails.email || !validatePassword(loginDetails.password)}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 ${
+                loading ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </div>
-          <div>
-            <Link to="/password/reset" className="text-black flex justify-center item-center hover:text-yellow-400">
-              Lost your password?
+          <div className="text-center">
+            <Link to="/password/reset" className="text-gray-500 hover:text-yellow-600">
+              Forgot password?
             </Link>
           </div>
         </form>
         {message && <p className="mt-2 text-center text-sm text-red-600">{message}</p>}
-        <div className="text-center mt-4">
-          <p className="text-sm">
+        <div className="text-center mt-6">
+          <p className="text-sm text-gray-500">
             © 2024 Higher Education Students' Grants & Loans Board
           </p>
         </div>
