@@ -15,6 +15,9 @@ const logoutUser = () => {
 };
 
 const Bonding = () => {
+  const handleCheckBondingStatus = () => {
+    window.location.href = "/my-bonding"; // Adjust as needed
+  };
   const [form, setForm] = useState({
     FirstName: '',
     SurName: '',
@@ -212,9 +215,7 @@ const Bonding = () => {
         formData.append('uploadedDocumentNationalId', selectedFiles.nationalId);
       }
 
-
       
-  
       
       // Get the token and decode it to extract user ID
       const token = localStorage.getItem('token');
@@ -543,18 +544,38 @@ const Bonding = () => {
           </div>
           
         ) : (
-          <div className="text-center mt-10">
-            <h2 className="text-3xl font-bold text-green-500">Bonding Completed Successfully!</h2>
-            <img src="/images/yeye.jpeg" alt="Success" className="mx-auto mt-6 w-64 h-64" />
-            <p className="mt-4">
-              Thank you for completing the bonding process. You can now log out or proceed with other tasks.
-            </p>
-            <button onClick={handleLogout} className="bg-blue-500 text-white font-semibold py-3 px-6 rounded-md hover:bg-yellow-600 transition mt-6 z-50">
-                     Logout
-                  </button>
-          </div>
-          
-        )}
+  <div className="text-center mt-10">
+  {modalMessage === "You have already completed the bonding process." ? (
+      <>
+        <h2 className="text-3xl font-bold text-red-500">Oops! You Have Already Bonded</h2>
+        <p className="mt-4">
+          It seems like you have already completed the bonding process. If you would like to review your bonding status, click the button below.
+        </p>
+        <button
+          onClick={handleCheckBondingStatus}
+          className="bg-blue-500 text-white font-semibold py-3 px-6 rounded-md hover:bg-yellow-600 transition mt-6 z-50"
+        >
+          Check Bonding Status
+        </button>
+      </>
+      
+    ) : (
+      <>
+        <h2 className="text-3xl font-bold text-green-500">Bonding Completed Successfully!</h2>
+        <img src="/images/yeye.jpeg" alt="Success" className="mx-auto mt-6 w-64 h-64" />
+        <p className="mt-4">
+          Thank you for completing the bonding process. You can now log out or proceed with other tasks.
+        </p>
+        <button
+          onClick={handleLogout}
+          className="bg-blue-500 text-white font-semibold py-3 px-6 rounded-md hover:bg-yellow-600 transition mt-6 z-50"
+        >
+          Logout
+        </button>
+      </>
+    )}
+  </div>
+)}
 
         {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
