@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreateBonding.prototype, "Sex", void 0);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)({ message: 'Phone number is required' }),
     __metadata("design:type", Number)
 ], CreateBonding.prototype, "PhoneNumber", void 0);
@@ -95,9 +95,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateBonding.prototype, "GuardianOccupation", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], CreateBonding.prototype, "GuardianPhoneNumber", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
@@ -115,9 +115,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateBonding.prototype, "AccountName", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], CreateBonding.prototype, "AccountNumber", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
@@ -131,11 +131,11 @@ __decorate([
 ], CreateBonding.prototype, "nationalId", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], CreateBonding.prototype, "Tuition", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], CreateBonding.prototype, "UpkeepAmount", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),

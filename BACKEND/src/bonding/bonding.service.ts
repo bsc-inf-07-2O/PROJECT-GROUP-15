@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBonding } from './dto/create-bonding';
@@ -8,17 +12,20 @@ import { User } from '../users/Student.entity';
 import { University } from '../university/University.entity';
 import { EmailService } from '../mailer/mailer.service';
 
-
 @Injectable()
 export class BondingService {
   constructor(
     @InjectRepository(Bonding) private bondingRepository: Repository<Bonding>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectRepository(University) private readonly universityRepository: Repository<University>,
+    @InjectRepository(University)
+    private readonly universityRepository: Repository<University>,
     private readonly emailService: EmailService,
   ) {}
 
-  async createBonding(createBondingDto: CreateBonding, userId?: number): Promise<Bonding> {
+  async createBonding(
+    createBondingDto: CreateBonding,
+    userId?: number,
+  ): Promise<Bonding> {
     let user: User | null = null;
 
     if (userId) {
@@ -30,12 +37,16 @@ export class BondingService {
       const bonding = this.bondingRepository.create({
         ...createBondingDto,
         user: user || undefined,
-    });
+      });
 
-     const existingBonding = await this.bondingRepository.findOne({ where: { user: { id: userId } } }); 
-     if (existingBonding) { 
-      throw new BadRequestException(`You have already completed the bonding process.`);
-     }
+      const existingBonding = await this.bondingRepository.findOne({
+        where: { user: { id: userId } },
+      });
+      if (existingBonding) {
+        throw new BadRequestException(
+          `You have already completed the bonding process.`,
+        );
+      }
     }
 
     const bonding = this.bondingRepository.create({
@@ -53,8 +64,8 @@ export class BondingService {
       homeVillage: createBondingDto.HomeVillage,
       nationalId: createBondingDto.nationalId,
       studentId: createBondingDto.studentId,
-      tuitionAmount: parseFloat(createBondingDto.Tuition || '0'),
-      upkeepAmount: parseFloat(createBondingDto.UpkeepAmount || '0'),
+      tuitionAmount: createBondingDto.Tuition,
+      upkeepAmount: createBondingDto.UpkeepAmount,
       guardianFullName: createBondingDto.GuardianFullName,
       guardianPostalAddress: createBondingDto.GuardianPostalAddress,
       guardianPhysicalAddress: createBondingDto.GuardianPhysicalAddress,
@@ -72,13 +83,15 @@ export class BondingService {
       where: { id: createBondingDto.universityId },
     });
     if (!university) {
-      throw new NotFoundException(`University with ID ${createBondingDto.universityId} not found`);
+      throw new NotFoundException(
+        `University with ID ${createBondingDto.universityId} not found`,
+      );
     }
     bonding.university = university;
 
     if (user) {
       await this.emailService.sendBondingSuccessEmail(user);
-  }
+    }
 
     return await this.bondingRepository.save(bonding);
   }
@@ -101,7 +114,9 @@ export class BondingService {
       relations: ['user', 'university'],
     });
     if (userBondings.length === 0) {
-      throw new NotFoundException(`No bonding entries found for user with ID ${userId}`);
+      throw new NotFoundException(
+        `No bonding entries found for user with ID ${userId}`,
+      );
     }
     return userBondings;
   }
@@ -113,7 +128,10 @@ export class BondingService {
     return count > 0;
   }
 
-  async updateBonding(id: number, updateBondingDto: UpdateBonding): Promise<Bonding> {
+  async updateBonding(
+    id: number,
+    updateBondingDto: UpdateBonding,
+  ): Promise<Bonding> {
     const bonding = await this.getBondingById(id);
     Object.assign(bonding, updateBondingDto);
     return await this.bondingRepository.save(bonding);
@@ -128,7 +146,7 @@ export class BondingService {
     if (!bonding) {
       throw new Error(`Bonding with ID ${id} not found`);
     }
-    
+
     if (bonding?.university) {
       // Delete the associated university record
       await this.universityRepository.remove(bonding.university);
@@ -137,5 +155,4 @@ export class BondingService {
     // Delete the bonding record
     return await this.bondingRepository.remove(bonding);
   }
-
 }

@@ -38,7 +38,9 @@ let BondingService = class BondingService {
                 ...createBondingDto,
                 user: user || undefined,
             });
-            const existingBonding = await this.bondingRepository.findOne({ where: { user: { id: userId } } });
+            const existingBonding = await this.bondingRepository.findOne({
+                where: { user: { id: userId } },
+            });
             if (existingBonding) {
                 throw new common_1.BadRequestException(`You have already completed the bonding process.`);
             }
@@ -58,8 +60,8 @@ let BondingService = class BondingService {
             homeVillage: createBondingDto.HomeVillage,
             nationalId: createBondingDto.nationalId,
             studentId: createBondingDto.studentId,
-            tuitionAmount: parseFloat(createBondingDto.Tuition || '0'),
-            upkeepAmount: parseFloat(createBondingDto.UpkeepAmount || '0'),
+            tuitionAmount: createBondingDto.Tuition,
+            upkeepAmount: createBondingDto.UpkeepAmount,
             guardianFullName: createBondingDto.GuardianFullName,
             guardianPostalAddress: createBondingDto.GuardianPostalAddress,
             guardianPhysicalAddress: createBondingDto.GuardianPhysicalAddress,

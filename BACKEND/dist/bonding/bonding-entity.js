@@ -38,7 +38,7 @@ __decorate([
     __metadata("design:type", String)
 ], Bonding.prototype, "sex", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int' }),
+    (0, typeorm_1.Column)({ type: 'bigint' }),
     __metadata("design:type", Number)
 ], Bonding.prototype, "phoneNumber", void 0);
 __decorate([
@@ -74,11 +74,11 @@ __decorate([
     __metadata("design:type", String)
 ], Bonding.prototype, "nationalId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2 }),
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 10, scale: 2 }),
     __metadata("design:type", Number)
 ], Bonding.prototype, "tuitionAmount", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2 }),
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 10, scale: 2 }),
     __metadata("design:type", Number)
 ], Bonding.prototype, "upkeepAmount", void 0);
 __decorate([
@@ -106,8 +106,8 @@ __decorate([
     __metadata("design:type", String)
 ], Bonding.prototype, "guardianOccupation", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 15, nullable: true }),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'int', nullable: true }),
+    __metadata("design:type", Number)
 ], Bonding.prototype, "guardianPhoneNumber", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
@@ -122,8 +122,8 @@ __decorate([
     __metadata("design:type", String)
 ], Bonding.prototype, "accountName", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'bigint', nullable: true }),
+    __metadata("design:type", Number)
 ], Bonding.prototype, "accountNumber", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => University_entity_1.University, (university) => university.bondings, { onDelete: 'CASCADE', eager: true }),

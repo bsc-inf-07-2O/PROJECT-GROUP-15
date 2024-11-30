@@ -15,14 +15,14 @@ export declare class CreateBonding {
     GuardianHomeVillage?: string;
     GuardianDistrict?: string;
     GuardianOccupation?: string;
-    GuardianPhoneNumber?: string;
+    GuardianPhoneNumber?: number;
     BankName?: string;
     Branch?: string;
     AccountName?: string;
-    AccountNumber?: string;
+    AccountNumber?: number;
     studentId?: string;
     nationalId?: string;
-    Tuition?: string;
-    UpkeepAmount?: string;
+    Tuition?: number;
+    UpkeepAmount?: number;
     universityId?: number;
 }

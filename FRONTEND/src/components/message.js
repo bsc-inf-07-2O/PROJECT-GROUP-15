@@ -43,10 +43,8 @@ const BondingMessage = () => {
   const [selectedMessage, setSelectedMessage] = useState(null);
 
   const messages = [
-    { title: "Proceed to deposit application fees", content: "You have successfully submitted your loan application...", time: "08:43PM" },
-    { title: "Proceed to deposit application fees", content: "You have successfully submitted your loan application...", time: "08:56AM" },
-    { title: "Bank account changed", content: "This is to let you know that your bank account details have changed.", time: "10:23AM" },
-    { title: "Welcome", content: "Dear JOEL GANIZANI, Welcome to Student...", time: "02:33PM" },
+    { title: "Bonding Completion", content: "You have successfully submitted your bonding form..."},
+    { title: "Welcome to our site", content: "You have successfully created the account..."},
   ];
 
   const handleSelectMessage = (msg) => {

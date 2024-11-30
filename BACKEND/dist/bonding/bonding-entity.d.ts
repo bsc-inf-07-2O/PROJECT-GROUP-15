@@ -23,11 +23,11 @@ export declare class Bonding extends BaseEntity {
     guardianHomeVillage?: string;
     guardianDistrict?: string;
     guardianOccupation?: string;
-    guardianPhoneNumber?: string;
+    guardianPhoneNumber?: number;
     bankName?: string;
     branch?: string;
     accountName?: string;
-    accountNumber?: string;
+    accountNumber?: number;
     university: University;
     user: User;
 }

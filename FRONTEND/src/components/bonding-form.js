@@ -268,17 +268,17 @@ const Bonding = () => {
       });
       
     if (response.data.message === 'User has already completed bonding.') {
-      setModalMessage('You have already completed the bonding process.');
+      setModalMessage('You have already completed the submition of the bonding form.');
       setIsBonded(true);
       setMessages((prev) => [
-        { title: "Bonding Status", content: "You have already completed the bonding process.", time: new Date().toLocaleTimeString() },
+        { title: "Bonding Status", content: "You have already completed the submition of bonding form.", time: new Date().toLocaleTimeString() },
         ...prev,
       ]);
     } else {
-      setModalMessage('Bonding is successful!');
+      setModalMessage('Bonding is complete!');
       setIsBonded(true);
       setMessages((prev) => [
-        { title: "Bonding Status", content: "Bonding is successful!", time: new Date().toLocaleTimeString() },
+        { title: "Bonding Status", content: "Bonding is completed!", time: new Date().toLocaleTimeString() },
         ...prev,
       ]);
     }
