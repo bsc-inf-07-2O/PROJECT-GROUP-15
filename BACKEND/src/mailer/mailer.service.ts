@@ -19,8 +19,8 @@ export class EmailService {
     await this.mailerService.sendMail({
       to: user.email,
       from: '"Loans Board" <bsc-inf-07-20@unima.ac.mw>',
-      subject: 'Bonding Process Successful',
-      text: 'Congratulations! Your bonding process was successful.',
+      subject: 'Bonding Process Complete',
+      text: 'Congratulations! you have successfully submited the bonding form.',
     });
   }
 }
